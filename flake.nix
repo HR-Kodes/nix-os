@@ -9,23 +9,30 @@
   };
 
   
-  outputs = { self, nixpkgs, home-manager, ... }:
+  outputs = { self, nixpkgs, home-manager, ... }@inputs:
 
   let
     lib = nixpkgs.lib;
     system = "x86_64-linux";
-    pkgs = nixpkgs.legacyPackages.${system};
+    # pkgs = nixpkgs.legacyPackages.${system};
 
-    # pkgs = import nixpkgs {
-    #   inherit system;
-    #   config = { allowUnfree = true };
-    # };
+    pkgs = import nixpkgs {
+      inherit system;
+      config = { 
+        allowUnfree = true;
+      };
+    };
 
   in {
     nixosConfigurations = {
       nixos = lib.nixosSystem {
         inherit system;
 	modules = [ ./profiles/laptop/configuration.nix ];
+
+	specialArgs = {
+	  # pass config variables from above
+	};
+
       };
     };
     
@@ -34,7 +41,10 @@
       koushikhr = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
     	modules = [ ./profiles/laptop/home.nix ];
+	extraSpecialArgs = {
+	  # pass config variables from above
       };
+    };
     };
 
     # homeManagerConfigurations = {

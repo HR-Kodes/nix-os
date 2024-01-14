@@ -43,6 +43,17 @@
   boot.loader.efi.efiSysMountPoint = "/boot";
 
 
+  # Bootloader -> Setting kernel.
+  boot.kernelModules = [ "v4l2loopback" ];
+  boot.extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
+
+
+  fonts.packages = with pkgs; [
+    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+  ];
+
+
+
   # FISH -> Setting default shell to fish.
   environment.shells = with pkgs; [ bash fish ];
   users.defaultUserShell = pkgs.fish;
@@ -78,9 +89,20 @@
   };
 
 
+  # SDDM -> Enabling login manager
+  # services.xserver.enable = true;
+  # services.xserver.displayManager.sddm.enable = true;
+  # services.xserver.displayManager.sddm.wayland.enable = true;
+  # services.xserver.displayManager.sddm.theme = "where_is_my_sddm_theme";
+
+
   # Desktop portals -> Enabling with gtk or hyprland.
   xdg.portal.enable = true;
-  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
+  xdg.portal.extraPortals = [ 
+    # pkgs.xdg-desktop-portal-hyprland
+    pkgs.xdg-desktop-portal
+    pkgs.xdg-desktop-portal-gtk
+  ];
 
   # Touchpad -> Enabling touchpad support.
   services.xserver.libinput.enable = true;
@@ -95,9 +117,11 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowUnfreePredicate = (pkg: true);
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
+  # Enabling thunar file manager.
+  programs.thunar.enable = true;
+
   environment.systemPackages = with pkgs; [
     sddm
     hyprland
@@ -108,20 +132,15 @@
     wget
     wpa_supplicant
     pipewire
-    git
+    gitFull
 
     kitty
     neovim
     google-chrome
   ];
 
-  services.actkbd = {
-    enable = true;
-    bindings = [
-      { keys = [ 113 ]; events = [ "key" ]; command = "/run/current-system/sw/bin/runuser -l koushikhr -c 'amixer -q set Master toggle'"; }
-      { keys = [ 114 ]; events = [ "key" ]; command = "/run/current-system/sw/bin/runuser -l koushikhr -c 'amixer -q set Master 5%- unmute'"; }
-      { keys = [ 115 ]; events = [ "key" ]; command = "/run/current-system/sw/bin/runuser -l koushikhr -c 'amixer -q set Master 5%+ unmute'"; }
-    ];
+  environment.sessionVariables = {
+    MOZ_USE_XINPUT2 = "1";
   };
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -159,8 +178,31 @@
     };
   };
 
+  environment.variables={
+   NIXOS_OZONE_WL = "1";
+   PATH = [
+     "\${HOME}/.local/bin"
+     "\${HOME}/.cargo/bin"
+     "\$/usr/local/bin"
+   ];
+   NIXPKGS_ALLOW_UNFREE = "1";
+   SCRIPTDIR = "\${HOME}/.local/share/scriptdeps";
+   STARSHIP_CONFIG = "\${HOME}/.config/starship/starship.toml";
+   XDG_CURRENT_DESKTOP = "Hyprland";
+   XDG_SESSION_TYPE = "wayland";
+   XDG_SESSION_DESKTOP = "Hyprland";
+   GDK_BACKEND = "wayland";
+   CLUTTER_BACKEND = "wayland";
+   SDL_VIDEODRIVER = "x11";
+   XCURSOR_SIZE = "24";
+   XCURSOR_THEME = "Bibata-Modern-Ice";
+   QT_QPA_PLATFORM = "wayland";
+   QT_QPA_PLATFORMTHEME = "qt5ct";
+   QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+   QT_AUTO_SCREEN_SCALE_FACTOR = "1";
+   MOZ_ENABLE_WAYLAND = "1";
+  };
 
   # nix.settings.experimental-features = "nix-command flakes";
-
 
 }

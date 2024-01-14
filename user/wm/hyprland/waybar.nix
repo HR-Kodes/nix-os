@@ -1,4 +1,4 @@
-{ config, pkgs, ...}:
+{config, pkgs, icon, ...}:
 
 {
   programs.waybar = {
@@ -10,13 +10,14 @@
 
       modules-left = [ "hyprland/window" ];
       modules-center = [ "network" "pulseaudio" "cpu" "hyprland/workspaces" "memory" "disk" "clock" ];
-      modules-right = [ "custom/notification" "tray" ];
+      modules-right = [ "battery" "custom/notification" "tray" ];
       "hyprland/workspaces" = {
       	format = "{icon}";
       	format-icons = {
-          default = " ";
+	  default = " ";
           active = " ";
           urgent = " ";
+
       	};
       	on-scroll-up = "hyprctl dispatch workspace e+1";
       	on-scroll-down = "hyprctl dispatch workspace e-1";
@@ -44,10 +45,10 @@
         tooltip = true;
       };
       "network" = {
-        format-icons = ["󰤯" "󰤟" "󰤢" "󰤥" "󰤨"];
+        format-icons = ["󰤯" "󰤟" "󰤢" "󰤥" "󰤨" ""];
         format-ethernet = ": {bandwidthDownOctets} : {bandwidthUpOctets}";
         format-wifi = "{icon} {signalStrength}%";
-        format-disconnected = "󰤮";
+        format-disconnected = "";
         tooltip = false;
       };
       "tray" = {
@@ -71,6 +72,20 @@
         };
         on-click = "pavucontrol";
       };
+
+      "battery" = {
+        states = {
+          warning = 30;
+          critical = 15;
+        };
+        format = "{icon} {capacity}%";
+        format-charging = "󰂄 {capacity}%";
+        format-plugged = "󱘖 {capacity}%";
+        format-icons = ["󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" ""];
+        on-click = "";
+        tooltip = false;
+      };
+
       "custom/notification" = {
         tooltip = false;
         format = "{icon} {}";
@@ -90,23 +105,24 @@
         on-click = "task-waybar";
         escape = true;
       };
-      "battery" = {
-        states = {
-          warning = 30;
-          critical = 15;
-        };
-        format = "{icon} {capacity}%";
-        format-charging = "󰂄 {capacity}%";
-        format-plugged = "󱘖 {capacity}%";
-        format-icons = ["󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
-        on-click = "";
-        tooltip = false;
-      };
+      # "battery" = {
+      #   states = {
+      #     warning = 30;
+      #     critical = 15;
+      #   };
+      #   format = "{icon} {capacity}%";
+      #   format-charging = "󰂄 {capacity}%";
+      #   format-plugged = "󱘖 {capacity}%";
+      #   format-icons = ["󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
+      #   on-click = "";
+      #   tooltip = false;
+      # };
     }];
     style = ''
 	* {
 		font-size: 16px;
 		font-family: JetBrainsMono Nerd Font, Font Awesome, sans-serif;
+		/* font-family: Font Awesome, Roboto, Arial, sans-serif; */
     		font-weight: bold;
 	}
 	window#waybar {

@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ lib, config, pkgs, ... }:
 
 {
   # Let Home Manager install and manage itself.
@@ -11,57 +11,139 @@
 
   imports = [
     ../../user/app/terminal/alacritty.nix # My alacritty config
+    # ../../user/app/terminal/alacritty.yml
+    ../../user/app/browsers/firefox-dev.nix
     ../../user/hardware/bluetooth.nix  # Bluetooth
     ../../user/wm/hyprland/waybar.nix
   ];
 
   home.packages = with pkgs; [
-    alacritty rofi-wayland
-    # fish
-    # # fonts?
-    # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
+    qutebrowser alacritty rofi-wayland avizo grim swappy slurp
+    libnotify swaynotificationcenter pavucontrol gnome.file-roller unrar unzip 
+    swww imv v4l-utils ydotool pkg-config wl-clipboard lsd transmission-gtk mpv
+    font-awesome symbola noto-fonts-color-emoji material-icons
 
-    # # You can also create simple shell scripts directly inside your
-    # # configuration. For example, this adds a command 'my-hello' to your
-    # # environment:
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
+    (import ../../scripts/emopicker9000.nix { inherit pkgs; })
+    (import ../../user/bin/task-waybar.nix { inherit pkgs; })
+    (import ../../user/bin/wallsetter.nix { inherit pkgs; })
+
   ];
 
-  # Home Manager is pretty good at managing dotfiles. The primary way to manage
-  # plain files is through 'home.file'.
-  home.file = {
-    # # Building this configuration will create a copy of 'dotfiles/screenrc' in
-    # # the Nix store. Activating the configuration will then make '~/.screenrc' a
-    # # symlink to the Nix store copy.
-    # ".screenrc".source = dotfiles/screenrc;
+  home.pointerCursor = {
+    gtk.enable = true;
+    x11.enable = true;
+    package = pkgs.bibata-cursors;
+    name = "Bibata-Modern-Ice";
+    size = 24;
+  };
 
-    # # You can also set the file content immediately.
-    # ".gradle/gradle.properties".text = ''
-    #   org.gradle.console=verbose
-    #   org.gradle.daemon.idletimeout=3600000
-    # '';
+  qt.enable = true;
+  qt.platformTheme = "gtk";
+  qt.style.name = "adwaita-dark";
+  qt.style.package = pkgs.adwaita-qt;
+  gtk = {
+    enable = true;
+    font = {
+      name = "Ubuntu";
+      size = 12;
+      package = pkgs.ubuntu_font_family;
+    };
+    theme = {
+      name = "Tokyonight-Storm-BL";
+      package = pkgs.tokyo-night-gtk;
+    };
+    iconTheme = {
+      name = "Papirus-Dark";
+      package = pkgs.papirus-icon-theme;
+    };
+    cursorTheme = {
+      name = "Bibata-Modern-Ice";
+      package = pkgs.bibata-cursors;
+    };
+
+
+    gtk3.extraConfig = {
+      Settings = ''
+      gtk-application-prefer-dark-theme=1
+      '';
+    };
+    gtk4.extraConfig = {
+      Settings = ''
+      gtk-application-prefer-dark-theme=1
+      '';
+    };
+  };
+
+  xdg = {
+    userDirs = {
+        enable = true;
+        createDirectories = true;
+    };
+  };
+
+  programs.bash = {
+    enable = true;
+    enableCompletion = true;
+    profileExtra = ''
+      #if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" = 1 ]; then
+      #  exec Hyprland
+      #fi
+    '';
+    sessionVariables = {
+    
+    };
+    shellAliases = {
+      sv="sudo nvim";
+      # flake-rebuild="sudo nixos-rebuild switch --flake ~/zaneyos/#workstation";
+      # laptop-rebuild="sudo nixos-rebuild switch --flake ~/zaneyos/#laptop";
+      v="nvim";
+      ls="lsd";
+      ll="lsd -l";
+      la="lsd -a";
+      lal="lsd -al";
+      ".."="cd ..";
+    };
+  };
+
+
+
+  home.file = {
 
     ".config/hypr/hyprland.conf".source = ../../user/wm/hyprland/hyprland.conf;
+
+    ".local/share/fonts" = {
+      source = ../../fonts;
+      recursive = true;
+    };
+
+    ".emoji".source = ../../user/emoji;
+
+    
     ".config/rofi" = {
       source = ../../user/app/rofi;
       recursive = true;
     };
 
+    ".config/alacritty/alacritty.yml".source = ../../user/app/terminal/alacritty.yml;
+
+    ".alacritty.yml".source = ../../user/app/terminal/alacritty.yml;
+
+    ".config/swaync" = {
+      source = ../../user/app/swaync;
+      recursive = true;
+    };
+    
+    "Pictures/Wallpapers" = {
+      source = ../../themes/wallpapers;
+      recursive = true;
+    };
+
+    ".config/avizo/config.ini" = {
+      source = ../../user/app/avizo/config.ini;
+    };
+
   };
 
-  # Home Manager can also manage your environment variables through
-  # 'home.sessionVariables'. If you don't want to manage your shell through Home
-  # Manager then you have to manually source 'hm-session-vars.sh' located at
-  # either
-  #
-  #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  /etc/profiles/per-user/hrk-hypr/etc/profile.d/hm-session-vars.sh
-  #
   home.sessionVariables = {
     # EDITOR = "emacs";
   };
@@ -73,5 +155,6 @@
     userName = "Koushik H R";
     userEmail = "koushikhr1441@gmail.com";
   };
+
 
 }
