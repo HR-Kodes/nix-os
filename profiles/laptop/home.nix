@@ -150,8 +150,6 @@
       source = ../../user/app/avizo/config.ini;
     };
 
-    “.config/nvim”.source = config.lib.file.mkOutOfStoreSymlink ~/.dotfiles/user/app/nvim;
-
   };
 
   fonts.fontconfig.enable = true;
@@ -173,6 +171,10 @@
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;
+
+    extraConfig = ''
+      ${builtins.readFile ../../user/app/nvim/lua/config/lazy.lua}
+    '';
     };
 
 }
