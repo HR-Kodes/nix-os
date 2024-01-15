@@ -21,13 +21,20 @@
     qutebrowser alacritty rofi-wayland avizo grim swappy slurp
     libnotify swaynotificationcenter pavucontrol gnome.file-roller unrar unzip 
     swww imv v4l-utils ydotool pkg-config wl-clipboard lsd transmission-gtk mpv
-    font-awesome symbola noto-fonts-color-emoji material-icons
+    nerdfonts font-awesome symbola noto-fonts-color-emoji material-icons
 
     (import ../../scripts/emopicker9000.nix { inherit pkgs; })
     (import ../../user/bin/task-waybar.nix { inherit pkgs; })
     (import ../../user/bin/wallsetter.nix { inherit pkgs; })
 
+    # Development Related packages
+    fd lazygit ripgrep# Dependencies Neovim - Lazy.Vim Distro
+    rustup # Rust Programming
+    gcc gnumake cmake autoconf automake libtool # cc Programming
+    nodejs corepack_latest # Web Development
+
   ];
+
 
   home.pointerCursor = {
     gtk.enable = true;
@@ -111,10 +118,10 @@
 
     ".config/hypr/hyprland.conf".source = ../../user/wm/hyprland/hyprland.conf;
 
-    ".local/share/fonts" = {
-      source = ../../fonts;
-      recursive = true;
-    };
+    # ".local/share/fonts" = {
+    #   source = ../../fonts;
+    #   recursive = true;
+    # };
 
     ".emoji".source = ../../user/emoji;
 
@@ -126,7 +133,7 @@
 
     ".config/alacritty/alacritty.yml".source = ../../user/app/terminal/alacritty.yml;
 
-    ".alacritty.yml".source = ../../user/app/terminal/alacritty.yml;
+    # ".alacritty.yml".source = ../../user/app/terminal/alacritty.yml;
 
     ".config/swaync" = {
       source = ../../user/app/swaync;
@@ -144,6 +151,8 @@
 
   };
 
+  fonts.fontconfig.enable = true;
+
   home.sessionVariables = {
     # EDITOR = "emacs";
   };
@@ -156,5 +165,12 @@
     userEmail = "koushikhr1441@gmail.com";
   };
 
+  programs.neovim = {
+    enable = true;
+
+    viAlias = true;
+    vimAlias = true;
+    vimdiffAlias = true;
+    };
 
 }

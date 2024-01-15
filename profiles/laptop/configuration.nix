@@ -133,6 +133,10 @@
     wpa_supplicant
     pipewire
     gitFull
+    # Packages Related -> Development
+    gcc
+    libstdcxx5
+    zig
 
     kitty
     neovim
