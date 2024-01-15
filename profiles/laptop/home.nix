@@ -13,6 +13,7 @@
     ../../user/app/terminal/alacritty.nix # My alacritty config
     # ../../user/app/terminal/alacritty.yml
     ../../user/app/browsers/firefox-dev.nix
+    ../../user/app/vscodium/vscodium.nix
     ../../user/hardware/bluetooth.nix  # Bluetooth
     ../../user/wm/hyprland/waybar.nix
   ];
@@ -156,6 +157,8 @@
   home.sessionVariables = {
     # EDITOR = "emacs";
   };
+
+  xdg.configFile.nvim.source = ../../user/app/nvim;
 
 
   # Configuring git.
