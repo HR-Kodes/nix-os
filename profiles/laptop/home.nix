@@ -171,10 +171,6 @@
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;
-
-    extraConfig = ''
-      ${builtins.readFile ../../user/app/nvim/lua/config/lazy.lua}
-    '';
     };
 
 }
