@@ -150,6 +150,8 @@
       source = ../../user/app/avizo/config.ini;
     };
 
+    “.config/nvim”.source = config.lib.file.mkOutOfStoreSymlink ~/.dotfiles/user/app/nvim;
+
   };
 
   fonts.fontconfig.enable = true;
@@ -157,9 +159,6 @@
   home.sessionVariables = {
     # EDITOR = "emacs";
   };
-
-  xdg.configFile.nvim.source = ../../user/app/nvim;
-
 
   # Configuring git.
   programs.git = {
