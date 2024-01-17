@@ -55,9 +55,12 @@
 
 
   # FISH -> Setting default shell to fish.
-  environment.shells = with pkgs; [ bash fish ];
+  environment.shells = with pkgs; [ bash fish zsh ];
   users.defaultUserShell = pkgs.fish;
   programs.fish.enable = true;
+  programs.zsh.interactiveShellInit = ''eval "$(direnv hook zsh"'';
+  programs.fish.interactiveShellInit = ''eval "$(direnv hook fish)"'';
+
 
 
   networking.hostName = "nixos"; # Define your hostname.

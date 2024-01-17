@@ -29,10 +29,12 @@
     (import ../../user/bin/wallsetter.nix { inherit pkgs; })
 
     # Development Related packages
+    helix # Text Editor trying new
     fd lazygit ripgrep# Dependencies Neovim - Lazy.Vim Distro
-    rustup # Rust Programming
+    # direnv
     gcc gnumake cmake autoconf automake libtool # cc Programming
-    nodejs corepack_latest # Web Development
+    # rustup # Rust Programming
+    # nodejs corepack_latest # Web Development
 
   ];
 
@@ -113,8 +115,6 @@
     };
   };
 
-
-
   home.file = {
 
     ".config/hypr/hyprland.conf".source = ../../user/wm/hyprland/hyprland.conf;
@@ -171,6 +171,9 @@
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;
-    };
+  };
+
+    programs.direnv.enable = true;
+    programs.direnv.nix-direnv.enable = true;
 
 }
