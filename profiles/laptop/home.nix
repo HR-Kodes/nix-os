@@ -16,10 +16,12 @@
     ../../user/app/vscodium/vscodium.nix
     ../../user/hardware/bluetooth.nix  # Bluetooth
     ../../user/wm/hyprland/waybar.nix
+    ../../user/wm/hyprland/swaylock.nix
+    ../../user/dev/dev.nix
   ];
 
   home.packages = with pkgs; [
-    qutebrowser alacritty rofi-wayland avizo grim swappy slurp
+    qutebrowser alacritty rofi-wayland avizo grim grimblast swappy slurp
     libnotify swaynotificationcenter pavucontrol gnome.file-roller unrar unzip 
     swww imv v4l-utils ydotool pkg-config wl-clipboard lsd transmission-gtk mpv
     nerdfonts font-awesome symbola noto-fonts-color-emoji material-icons
@@ -28,11 +30,13 @@
     (import ../../user/bin/task-waybar.nix { inherit pkgs; })
     (import ../../user/bin/wallsetter.nix { inherit pkgs; })
 
+    # Rust Based Toolkit.
+    eza bat
+
     # Development Related packages
-    helix # Text Editor trying new
-    fd lazygit ripgrep# Dependencies Neovim - Lazy.Vim Distro
+    fd lazygit ripgrep # Dependencies Neovim - Lazy.Vim Distro
     # direnv
-    gcc gnumake cmake autoconf automake libtool # cc Programming
+    # gcc gnumake cmake autoconf automake libtool # cc Programming
     # rustup # Rust Programming
     # nodejs corepack_latest # Web Development
 
@@ -149,6 +153,14 @@
     ".config/avizo/config.ini" = {
       source = ../../user/app/avizo/config.ini;
     };
+
+    ".config/fish" = {
+        source = ../../user/app/shell/fish;
+        recursive = true;
+      };
+
+      ".config/starship.toml".source = ../../user/app/shell/starship/starship.toml;
+      ".config/starship_cat.toml".source = ../../user/app/shell/starship/starship_cat.toml;
 
   };
 

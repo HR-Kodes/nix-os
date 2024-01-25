@@ -20,6 +20,8 @@
       ../../system/security/gpg.nix
 
       ../../system/wm/hyprland.nix
+
+      ../../system/dev/dev.nix
     ];
 
   nix.nixPath = [ "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
@@ -60,6 +62,28 @@
   programs.fish.enable = true;
   programs.zsh.interactiveShellInit = ''eval "$(direnv hook zsh"'';
   programs.fish.interactiveShellInit = ''eval "$(direnv hook fish)"'';
+  
+  programs.starship.enable = true;
+  programs.starship.settings = {
+    add_newline = false;
+  format = "$shlvl$shell$username$hostname$nix_shell$git_branch$git_commit$git_state$git_status$directory$jobs$cmd_duration$character";
+  shlvl = {
+    disabled = false;
+    symbol = "ﰬ";
+    style = "bright-red bold";
+  };
+  shell = {
+    disabled = false;
+    format = "$indicator";
+    fish_indicator = "";
+    bash_indicator = "[BASH](bright-white) ";
+    zsh_indicator = "[ZSH](bright-white) ";
+  };
+  username = {
+    style_user = "bright-white bold";
+    style_root = "bright-red bold";
+  };
+  };
 
 
 
@@ -110,11 +134,24 @@
   # Touchpad -> Enabling touchpad support.
   services.xserver.libinput.enable = true;
 
+  # Mounting USB.
+  services.udisks2.enable = true;
+  services.gvfs.enable = true;
+
+  security.pam.services.swaylock = {
+      text = ''
+        auth include login
+        '';
+    };
+
+  # Docker install
+  virtualisation.docker.enable = true;
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.koushikhr = {
     isNormalUser = true;
     description = "Koushik H R";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
     packages = with pkgs; [];
   };
 
@@ -186,7 +223,7 @@
   };
 
   environment.variables={
-   NIXOS_OZONE_WL = "1";
+   # NIXOS_OZONE_WL = "1";
    PATH = [
      "\${HOME}/.local/bin"
      "\${HOME}/.cargo/bin"

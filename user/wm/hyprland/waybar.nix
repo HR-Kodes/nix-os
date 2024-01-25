@@ -45,11 +45,12 @@
         tooltip = true;
       };
       "network" = {
-        format-icons = ["󰤯" "󰤟" "󰤢" "󰤥" "󰤨" ""];
+        format-icons = ["󰤯" "󰤟" "󰤢" "󰤥" "󰤨"];
         format-ethernet = ": {bandwidthDownOctets} : {bandwidthUpOctets}";
         format-wifi = "{icon} {signalStrength}%";
         format-disconnected = "";
         tooltip = false;
+        on-click = "nm-connection-editor";
       };
       "tray" = {
         spacing = 12;
@@ -120,7 +121,7 @@
     }];
     style = ''
 	* {
-		font-size: 16px;
+		font-size: 14px; /* 16px */
 		font-family: JetBrainsMono Nerd Font, Font Awesome, sans-serif;
 		/* font-family: Font Awesome, Roboto, Arial, sans-serif; */
     		font-weight: bold;
