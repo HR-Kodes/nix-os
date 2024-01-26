@@ -18,6 +18,7 @@
 
       ../../system/security/firewall.nix
       ../../system/security/gpg.nix
+      ../../system/security/samba.nix
 
       ../../system/wm/hyprland.nix
 

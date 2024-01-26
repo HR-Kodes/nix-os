@@ -25,6 +25,7 @@
     libnotify swaynotificationcenter pavucontrol gnome.file-roller unrar unzip 
     swww imv v4l-utils ydotool pkg-config wl-clipboard lsd transmission-gtk mpv
     nerdfonts font-awesome symbola noto-fonts-color-emoji material-icons
+    qbittorrent vlc libsForQt5.kdeconnect-kde
 
     (import ../../scripts/emopicker9000.nix { inherit pkgs; })
     (import ../../user/bin/task-waybar.nix { inherit pkgs; })
